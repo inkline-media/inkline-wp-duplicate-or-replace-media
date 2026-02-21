@@ -4,7 +4,7 @@ Tags: media, duplicate, copy, clone, media library
 Requires at least: 5.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 3.1.0
+Stable tag: 3.2.0
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,6 +69,9 @@ Any user with the `upload_files` capability (Author role and above by default) c
 
 == Changelog ==
 
+= 3.2.0 =
+* Added: Automatic update checking from GitHub using plugin-update-checker. Updates now appear in the WordPress dashboard like any other plugin.
+
 = 3.1.0 =
 * Security: Added per-post `edit_post` capability check (defense in depth, mirrors Enable Media Replace).
 * Security: Switched from `wp_redirect` to `wp_safe_redirect` to prevent open redirects.
@@ -131,6 +134,9 @@ Any user with the `upload_files` capability (Author role and above by default) c
 * Initial release with Duplicate button in the media library attachment details pane.
 
 == Upgrade Notice ==
+
+= 3.2.0 =
+Automatic updates from GitHub — plugin updates now appear in the WordPress dashboard.
 
 = 3.1.0 =
 Security hardening: per-post capability checks, wp_safe_redirect, sanitize_file_name, proper HTTP status codes. Uses WordPress core wp_unique_filename. Full EMR parity on injection points.

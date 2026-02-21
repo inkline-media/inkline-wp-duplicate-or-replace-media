@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Inkline Duplicate Media
  * Description: Adds a "Duplicate" action in the Media Library list view, Edit Media page, and media modal, creating a copy of the media file as a new attachment.
- * Version: 3.1.0
+ * Version: 3.2.0
  * Author: Inkline Media
  * License: GPL-2.0+
  */
@@ -10,6 +10,19 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
+
+// ---------------------------------------------------------------------------
+// Auto-update from GitHub releases via plugin-update-checker
+// ---------------------------------------------------------------------------
+
+require_once __DIR__ . '/vendor/plugin-update-checker-5.6/load-v5p6.php';
+
+$inkline_dm_update_checker = YahnisElsts\PluginUpdateChecker\v5p6\PucFactory::buildUpdateChecker(
+    'https://github.com/inkline-media/inkline-wp-duplicate-or-replace-media/',
+    __FILE__,
+    'inkline-duplicate-media'
+);
+$inkline_dm_update_checker->setBranch( 'main' );
 
 /**
  * Check whether the current user has permission to duplicate a given attachment.

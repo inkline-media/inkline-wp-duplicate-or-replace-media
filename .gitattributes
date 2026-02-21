@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Exclude repo-only files from GitHub source zip (used by plugin updater)
+.gitattributes export-ignore
+.gitignore export-ignore
