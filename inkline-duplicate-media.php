@@ -2,7 +2,9 @@
 /**
  * Plugin Name: Inkline Duplicate Media
  * Description: Adds a "Duplicate" action in the Media Library list view, Edit Media page, and media modal, creating a copy of the media file as a new attachment.
- * Version: 3.2.0
+ * Version: 3.2.1
+ * Requires at least: 6.9
+ * Requires PHP: 8.2
  * Author: Inkline Media
  * License: GPL-2.0+
  */

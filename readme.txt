@@ -1,10 +1,10 @@
 === Inkline Duplicate Media ===
 Contributors: inklinemedia
 Tags: media, duplicate, copy, clone, media library
-Requires at least: 5.9
+Requires at least: 6.9
 Tested up to: 6.9
-Requires PHP: 7.4
-Stable tag: 3.2.0
+Requires PHP: 8.2
+Stable tag: 3.2.1
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,6 +68,9 @@ Any user with the `upload_files` capability (Author role and above by default) c
 3. Duplicate link in the media modal alongside Edit Image and Delete Permanently.
 
 == Changelog ==
+
+= 3.2.1 =
+* Added: Minimum WordPress (6.9) and PHP (8.2) version requirements in plugin header.
 
 = 3.2.0 =
 * Added: Automatic update checking from GitHub using plugin-update-checker. Updates now appear in the WordPress dashboard like any other plugin.
