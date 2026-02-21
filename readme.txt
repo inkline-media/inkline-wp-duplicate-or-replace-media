@@ -1,47 +1,60 @@
-=== Inkline Duplicate Media ===
+=== Inkline Duplicate or Replace Media ===
 Contributors: inklinemedia
-Tags: media, duplicate, copy, clone, media library
+Tags: media, duplicate, replace, copy, media library
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.2
-Stable tag: 3.2.1
+Stable tag: 4.0.0
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Adds a "Duplicate" action to the WordPress Media Library, allowing you to create an independent copy of any media file without affecting the original.
+Adds Duplicate and Replace actions to the WordPress Media Library. Duplicate creates an independent copy; Replace swaps the underlying file and optionally updates all URLs site-wide.
 
 == Description ==
 
-Inkline Duplicate Media adds a simple duplicate function to three locations in the WordPress admin:
+Inkline Duplicate or Replace Media adds two powerful actions to three locations in the WordPress admin:
 
-1. **Media Library list view** — A "Duplicate" link appears in the row actions when hovering over any media item.
-2. **Edit Media page** — A "Duplicate Media" meta box in the sidebar lets you copy the file you're currently viewing.
-3. **Media modal** — When browsing media from a post/page editor (e.g. setting a featured image or inserting media), a "Duplicate" link appears next to "Edit Image" and "Delete Permanently".
+1. **Media Library list view** — "Duplicate" and "Replace media" links appear in the row actions when hovering over any media item.
+2. **Edit Media page** — "Duplicate Media" and "Replace Media" meta boxes in the sidebar.
+3. **Media modal** — When browsing media from a post/page editor, both actions appear alongside "Edit Image" and "Delete Permanently".
 
-**Why use this?**
+**Duplicate Features:**
 
-WordPress modifies the original file when you crop or edit an image. If that image is used in multiple places, all of them are affected. This plugin lets you create a copy first, then safely edit the copy without changing the original.
-
-**Features:**
-
+* Creates an independent copy of any media file
 * Copies the full-resolution file and generates all thumbnail sizes
 * Carries over alt text, caption, and description
 * Appends "(Copy)" to the title for easy identification
 * Success notification with a link to the new copy
-* No settings page — just activate and go
+
+**Replace Features:**
+
+* Upload a new file to replace the current one in place
+* Two modes: "Just replace the file" (keep URL) or "Replace and update all links" (new filename, all URLs updated site-wide)
+* Side-by-side preview of current and new file with dimensions and file size
+* Drag-and-drop file upload
+* File size and type validation before upload
+* Three date options: set to current date, keep original date, or set a custom date
+* Remembers your last-used settings
+
+**Integrations:**
+
+* Elementor — handles slash-escaped URLs in Elementor's JSON storage and clears Elementor's file cache
+* Cache flushing for W3 Total Cache, WP Super Cache, WP Engine, WP Fastest Cache, SiteGround, LiteSpeed, and Kinsta
 
 **Security:**
 
 * Nonce verification on all actions
-* Capability checks (requires `upload_files` permission)
-* Path traversal protection — only files within the uploads directory can be duplicated
+* Capability checks (requires `upload_files` + `edit_post` per-attachment)
+* Path traversal protection — only files within the uploads directory
+* File type validation via `wp_check_filetype_and_ext()`
+* SQL safety via `$wpdb->prepare()` and `$wpdb->esc_like()`
 * No frontend impact — only loads in wp-admin
 
 == Installation ==
 
 1. Upload the `inkline-duplicate-media` folder to `/wp-content/plugins/`.
 2. Activate the plugin through the **Plugins** menu in WordPress.
-3. That's it — no configuration needed. The duplicate option will appear in your Media Library.
+3. That's it — no configuration needed. Duplicate and Replace options will appear in your Media Library.
 
 == Frequently Asked Questions ==
 
@@ -53,21 +66,43 @@ No. A completely independent copy is created. The original file and all its exis
 
 It's saved in the same uploads directory as the original, with "-copy" appended to the filename (e.g. `photo.jpg` becomes `photo-copy.jpg`).
 
-= Does it copy the metadata? =
+= What's the difference between the two replace modes? =
 
-Yes — alt text, caption (excerpt), and description are all copied. A new set of thumbnails is generated for the duplicate.
+"Just replace the file" keeps the same filename and URL — only the file content changes. "Replace file, use new file name, and update all links" uses the new filename and updates all references across the site (post content, postmeta, termmeta, commentmeta).
+
+= Does Replace work with Elementor? =
+
+Yes. The plugin handles Elementor's JSON-encoded URLs (which use escaped slashes) and clears Elementor's file cache after replacement.
 
 = Can non-admin users use this? =
 
-Any user with the `upload_files` capability (Author role and above by default) can duplicate media.
+Any user with the `upload_files` capability (Author role and above by default) can duplicate and replace media, provided they also have `edit_post` permission for the specific attachment.
 
 == Screenshots ==
 
 1. Duplicate link in Media Library list view row actions.
 2. Duplicate Media meta box on the Edit Media page.
 3. Duplicate link in the media modal alongside Edit Image and Delete Permanently.
+4. Replace Media form with side-by-side file preview.
 
 == Changelog ==
+
+= 4.0.0 =
+* Added: Replace Media functionality — upload a new file to replace an existing media item.
+* Added: Two replace modes: "Just replace" (keep URL) and "Replace and update all links" (new filename, site-wide URL update).
+* Added: Side-by-side file preview with drag-and-drop upload on the replace form.
+* Added: File size and type validation before upload.
+* Added: Three date options when replacing: current date, keep original, or custom date.
+* Added: URL search/replace across post content, postmeta, termmeta, and commentmeta.
+* Added: Serialized and JSON data handling for URL replacement.
+* Added: Thumbnail size matching — maps old thumbnail sizes to nearest new sizes.
+* Added: Elementor integration — handles escaped-slash URLs in JSON storage, clears Elementor file cache.
+* Added: Cache flushing for W3TC, WP Super Cache, WP Engine, WP Fastest Cache, SiteGround, LiteSpeed, and Kinsta.
+* Added: "Replace media" link in Media Library row actions, Edit Media sidebar meta box, and media modal.
+* Added: Remembers user's last-used replace settings.
+* Improved: Plugin restructured into multiple files (includes/, views/, assets/) for maintainability.
+* Improved: WP 5.3+ scaled image handling via `wp_get_original_image_path()`.
+* Changed: Plugin renamed from "Inkline Duplicate Media" to "Inkline Duplicate or Replace Media".
 
 = 3.2.1 =
 * Added: Minimum WordPress (6.9) and PHP (8.2) version requirements in plugin header.
@@ -137,6 +172,9 @@ Any user with the `upload_files` capability (Author role and above by default) c
 * Initial release with Duplicate button in the media library attachment details pane.
 
 == Upgrade Notice ==
+
+= 4.0.0 =
+Major update: adds Replace Media functionality (replace file in place, update URLs site-wide, Elementor support, cache flushing). Plugin renamed to "Inkline Duplicate or Replace Media".
 
 = 3.2.0 =
 Automatic updates from GitHub — plugin updates now appear in the WordPress dashboard.

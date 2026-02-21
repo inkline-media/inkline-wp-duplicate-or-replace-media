@@ -1,0 +1,222 @@
+/* Inkline Replace Media — form styles */
+
+/* ---- Drop overlay ---- */
+.inkline-drop-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0, 0, 0, 0.6);
+    border: 6px dashed #aaa;
+    align-items: center;
+    justify-content: center;
+}
+.inkline-drop-overlay h3 {
+    color: #ddd;
+    font-size: 32px;
+}
+
+/* ---- Layout ---- */
+.inkline-replace-form {
+    max-width: 960px;
+}
+.inkline-editor {
+    margin-top: 20px;
+}
+
+/* ---- Sections ---- */
+.inkline-section {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.inkline-section-header {
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #ccd0d4;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* ---- Explainer ---- */
+.inkline-explainer {
+    font-size: 14px;
+    color: #555;
+    max-width: 700px;
+}
+
+/* ---- Previews ---- */
+.inkline-previews {
+    display: flex;
+    gap: 24px;
+    margin-top: 15px;
+}
+.inkline-preview-box {
+    flex: 1;
+    border: 1px solid #ddd;
+    background: #fafafa;
+    padding: 12px;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+.inkline-preview-label {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.inkline-preview-img {
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    margin: 0 auto 10px;
+    display: block;
+}
+.inkline-preview-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    margin: auto;
+    opacity: 0.5;
+    color: #666;
+}
+.inkline-preview-meta {
+    margin-top: auto;
+    font-size: 13px;
+    color: #666;
+}
+.inkline-preview-meta span {
+    display: block;
+    margin-top: 2px;
+}
+.inkline-preview-name {
+    font-weight: 500;
+    word-break: break-all;
+}
+
+/* ---- Upload area ---- */
+.inkline-upload-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    cursor: pointer;
+    border: 2px dashed #ccd0d4;
+    border-radius: 4px;
+    padding: 30px 15px;
+    margin: 0;
+    transition: border-color 0.15s, background 0.15s;
+}
+.inkline-upload-area:hover {
+    border-color: #2271b1;
+    background: #f0f6fc;
+}
+.inkline-upload-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    color: #999;
+    margin-bottom: 8px;
+}
+.inkline-upload-text {
+    color: #666;
+    font-size: 13px;
+}
+
+/* ---- Error / Warning banners ---- */
+.inkline-form-error,
+.inkline-form-warning {
+    background: #fff;
+    padding: 10px 14px;
+    margin: 12px 0;
+}
+.inkline-form-error {
+    border-left: 4px solid #d63638;
+}
+.inkline-form-warning {
+    border-left: 4px solid #dba617;
+}
+.inkline-form-error p,
+.inkline-form-warning p {
+    margin: 0;
+    font-size: 13px;
+}
+
+/* ---- Options columns ---- */
+.inkline-options-row {
+    display: flex;
+    gap: 20px;
+}
+.inkline-options-row > .inkline-section {
+    flex: 1;
+}
+
+/* ---- Radio options ---- */
+.inkline-option {
+    margin-bottom: 14px;
+}
+.inkline-option label {
+    font-size: 14px;
+    cursor: pointer;
+}
+.inkline-option .description {
+    margin: 4px 0 0 24px;
+    color: #666;
+    font-size: 13px;
+}
+
+/* ---- Timestamp list ---- */
+.inkline-timestamp-list {
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0;
+}
+.inkline-timestamp-list li {
+    margin-bottom: 8px;
+}
+.inkline-timestamp-list label {
+    cursor: pointer;
+}
+.inkline-date-hint {
+    color: #888;
+    font-size: 12px;
+}
+
+/* ---- Custom date picker ---- */
+.inkline-custom-date {
+    margin: 10px 0 0 24px;
+}
+.inkline-custom-date input[type="date"] {
+    width: 160px;
+}
+.inkline-custom-date .small-text {
+    width: 50px;
+}
+
+/* ---- Form controls ---- */
+.inkline-form-controls {
+    margin-top: 5px;
+}
+.inkline-form-controls .button {
+    margin-left: 10px;
+}
+
+/* ---- Success / Error messages ---- */
+.inkline-success-message {
+    border-left: 4px solid #00a32a;
+}
+.inkline-error-message {
+    border-left: 4px solid #d63638;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 782px) {
+    .inkline-previews {
+        flex-direction: column;
+    }
+    .inkline-options-row {
+        flex-direction: column;
+    }
+}
