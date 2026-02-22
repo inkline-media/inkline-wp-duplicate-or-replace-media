@@ -4,7 +4,7 @@ Tags: media, duplicate, replace, copy, media library
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.2
-Stable tag: 4.0.2
+Stable tag: 4.0.3
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -86,6 +86,12 @@ Any user with the `upload_files` capability (Author role and above by default) c
 4. Replace Media form with side-by-side file preview.
 
 == Changelog ==
+
+= 4.0.3 =
+* Fixed: Clear stale attachment metadata before regenerating thumbnails so all sizes are created fresh (prevents wp_create_image_subsizes from skipping sizes that existed in the old metadata).
+* Fixed: Source URL for URL replacement reverted to wp_get_original_image_url() for broadest LIKE query match across all URL variants (matches Enable Media Replace's approach).
+* Fixed: MODE_REPLACE now always uses thumbnails_only for URL replacement (the main filename doesn't change in replace mode).
+* Fixed: URL replacement maps now include the metadata 'file' entry (scaled filename) as a separate search/replace target for full coverage.
 
 = 4.0.2 =
 * Fixed: Replace now correctly updates the main image URL in post content when the attachment URL changes (e.g. scaled images).

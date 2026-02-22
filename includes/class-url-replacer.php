@@ -48,9 +48,9 @@ class Inkline_URL_Replacer {
         $urls = $this->build_url_maps();
 
         if ( $thumbnails_only ) {
-            // Remove the main file URL — it hasn't changed in MODE_REPLACE.
-            unset( $urls['search']['base'], $urls['search']['file'] );
-            unset( $urls['replace']['base'], $urls['replace']['file'] );
+            // Remove main file URLs — they haven't changed in MODE_REPLACE.
+            unset( $urls['search']['base'], $urls['search']['file'], $urls['search']['meta_file'] );
+            unset( $urls['replace']['base'], $urls['replace']['file'], $urls['replace']['meta_file'] );
         }
 
         // Balance arrays: drop target sizes that don't exist in source.
@@ -129,10 +129,18 @@ class Inkline_URL_Replacer {
             $replace['file'] = basename( $target_path );
         }
 
-        // Thumbnail URLs from metadata.
+        // Metadata 'file' entry — for scaled images this is the scaled filename
+        // (e.g. photo-scaled.jpg) which differs from the 'base' URL (photo.jpg).
+        // Including both ensures MODE_SEARCHREPLACE covers all URL variants.
         $source_dir = $source_path ? dirname( $source_path ) : '';
         $target_dir = $target_path ? dirname( $target_path ) : '';
 
+        if ( ! empty( $this->source_meta['file'] ) && ! empty( $this->target_meta['file'] ) ) {
+            $search['meta_file']  = $source_dir . '/' . wp_basename( $this->source_meta['file'] );
+            $replace['meta_file'] = $target_dir . '/' . wp_basename( $this->target_meta['file'] );
+        }
+
+        // Thumbnail URLs from metadata.
         if ( ! empty( $this->source_meta['sizes'] ) ) {
             foreach ( $this->source_meta['sizes'] as $size => $data ) {
                 $search[ 'thumb-' . $size ] = $source_dir . '/' . $data['file'];

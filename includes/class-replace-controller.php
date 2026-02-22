@@ -99,9 +99,14 @@ class Inkline_Replace_Controller {
         $post_id = $this->post_id;
 
         // 1. Get source metadata and URLs before we delete anything.
-        // Use the attachment URL (possibly -scaled), not the original image URL,
-        // because post content references the attachment URL.
-        $source_url  = wp_get_attachment_url( $post_id );
+        // Use the original image URL (pre-scaled) for the broadest LIKE query match.
+        // This matches EMR's approach and ensures all URL variants are found.
+        $source_url = function_exists( 'wp_get_original_image_url' )
+            ? wp_get_original_image_url( $post_id )
+            : false;
+        if ( ! $source_url ) {
+            $source_url = wp_get_attachment_url( $post_id );
+        }
         $source_meta = wp_get_attachment_metadata( $post_id );
         $source_mime = get_post_mime_type( $post_id );
 
@@ -133,8 +138,13 @@ class Inkline_Replace_Controller {
             @unlink( $this->source_file );
         }
 
-        // Clean up stale backup sizes and original_image reference.
+        // Clean up stale backup sizes metadata.
         delete_post_meta( $post_id, '_wp_attachment_backup_sizes' );
+
+        // Clear stale attachment metadata so wp_create_image_subsizes() generates
+        // ALL thumbnail sizes fresh instead of skipping sizes that already exist
+        // in the old metadata (whose files we just deleted).
+        wp_update_attachment_metadata( $post_id, array() );
 
         // 4. Copy new file to target location.
         if ( ! copy( $this->tmp_file, $this->target_file ) ) {
@@ -194,10 +204,9 @@ class Inkline_Replace_Controller {
 
             $replacer->replace( false );
         } else {
-            // Replace mode: update thumbnail URLs. Also update the main URL if
-            // it changed (e.g. scaled image replaced with a non-scaled one).
-            $thumbnails_only = ( $source_url === $target_url );
-            $replacer->replace( $thumbnails_only );
+            // Replace mode: only update thumbnail URLs. The main filename doesn't
+            // change in MODE_REPLACE, so the main URL stays the same. Matches EMR.
+            $replacer->replace( true );
         }
 
         // 11. Update timestamps.
