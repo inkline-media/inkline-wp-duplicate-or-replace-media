@@ -114,13 +114,28 @@ class Inkline_Replace_Controller {
         $attached     = get_attached_file( $post_id );
         wp_delete_attachment_files( $post_id, $source_meta, $backup_sizes, $this->source_file );
 
-        // Fallback: force-delete the attached file if it still exists (handles -scaled).
+        // wp_delete_attachment_files() skips thumbnails shared with other attachments
+        // (e.g. our Duplicate feature). Force-delete any remaining thumbnail files.
+        if ( ! empty( $source_meta['sizes'] ) ) {
+            $source_dir = dirname( $this->source_file );
+            foreach ( $source_meta['sizes'] as $size_data ) {
+                $thumb_path = $source_dir . '/' . $size_data['file'];
+                if ( file_exists( $thumb_path ) ) {
+                    @unlink( $thumb_path );
+                }
+            }
+        }
+
+        // Force-delete the attached file and original if they still exist (handles -scaled).
         if ( $attached && file_exists( $attached ) && $attached !== $this->source_file ) {
             @unlink( $attached );
         }
         if ( file_exists( $this->source_file ) ) {
             @unlink( $this->source_file );
         }
+
+        // Clean up stale backup sizes and original_image reference.
+        delete_post_meta( $post_id, '_wp_attachment_backup_sizes' );
 
         // 4. Copy new file to target location.
         if ( ! copy( $this->tmp_file, $this->target_file ) ) {

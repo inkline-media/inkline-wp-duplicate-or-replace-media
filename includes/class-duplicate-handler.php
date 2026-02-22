@@ -52,7 +52,13 @@ class Inkline_Duplicate_Handler {
             );
         }
 
-        $original_file = get_attached_file( $attachment_id );
+        // Use the original full-resolution file (not the -scaled version) so the
+        // duplicate gets its own scaled version and thumbnails generated fresh,
+        // exactly as if the user uploaded the image from their computer.
+        $original_file = wp_get_original_image_path( $attachment_id );
+        if ( ! $original_file ) {
+            $original_file = get_attached_file( $attachment_id );
+        }
         if ( ! $original_file || ! file_exists( $original_file ) ) {
             wp_die( esc_html__( 'Original file not found on disk.' ), '', array( 'response' => 404 ) );
         }
