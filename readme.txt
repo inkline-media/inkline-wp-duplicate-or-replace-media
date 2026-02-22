@@ -4,7 +4,7 @@ Tags: media, duplicate, replace, copy, media library
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.2
-Stable tag: 4.0.3
+Stable tag: 4.0.4
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -86,6 +86,10 @@ Any user with the `upload_files` capability (Author role and above by default) c
 4. Replace Media form with side-by-side file preview.
 
 == Changelog ==
+
+= 4.0.4 =
+* Added: Kinsta per-URL cache purge — after replacement, each image URL (main file, original, and all thumbnail sizes) is individually invalidated via Kinsta's /kinsta-clear-cache/ endpoint.
+* Improved: Kinsta detection now checks KINSTAMU_VERSION, Kinsta\Cache, Developer_Kinsta\Cache, and KINSTA_CACHE_ZONE server variable.
 
 = 4.0.3 =
 * Fixed: Clear stale attachment metadata before regenerating thumbnails so all sizes are created fresh (prevents wp_create_image_subsizes from skipping sizes that existed in the old metadata).

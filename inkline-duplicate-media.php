@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Inkline Duplicate or Replace Media
  * Description: Adds Duplicate and Replace actions to the WordPress Media Library. Duplicate creates an independent copy; Replace swaps the underlying file and optionally updates all URLs site-wide.
- * Version: 4.0.3
+ * Version: 4.0.4
  * Requires at least: 6.9
  * Requires PHP: 8.2
  * Author: Inkline Media

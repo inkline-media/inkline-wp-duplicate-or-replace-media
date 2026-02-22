@@ -55,9 +55,10 @@ class Inkline_Cache_Flusher {
             do_action( 'litespeed_media_reset', $post_id );
         }
 
-        // Kinsta.
-        if ( class_exists( 'Developer_Kinsta\Cache' ) || function_exists( 'kinsta_cache_purge' ) ) {
+        // Kinsta — purge object cache, page cache, and CDN cache for image URLs.
+        if ( self::is_kinsta() ) {
             wp_cache_flush();
+            self::flush_kinsta_urls( $post_id );
         }
 
         /**
@@ -66,5 +67,80 @@ class Inkline_Cache_Flusher {
          * @param int $post_id The attachment post ID.
          */
         do_action( 'inkline/replace/cache_flush', $post_id );
+    }
+
+    /**
+     * Check if the site is running on Kinsta.
+     *
+     * @return bool
+     */
+    private static function is_kinsta() {
+        return defined( 'KINSTAMU_VERSION' )
+            || class_exists( 'Kinsta\Cache' )
+            || class_exists( 'Developer_Kinsta\Cache' )
+            || isset( $_SERVER['KINSTA_CACHE_ZONE'] );
+    }
+
+    /**
+     * Purge Kinsta's server/CDN cache for all URLs belonging to an attachment.
+     *
+     * Uses Kinsta's /kinsta-clear-cache/{path} endpoint to invalidate
+     * individual image URLs (main file, original, and every thumbnail size).
+     *
+     * @param int $post_id The attachment post ID.
+     */
+    private static function flush_kinsta_urls( $post_id ) {
+        $urls = self::get_attachment_urls( $post_id );
+
+        foreach ( $urls as $url ) {
+            $path = ltrim( wp_parse_url( $url, PHP_URL_PATH ), '/' );
+            if ( ! $path ) {
+                continue;
+            }
+            wp_remote_get(
+                home_url( '/kinsta-clear-cache/' . $path ),
+                array(
+                    'sslverify' => false,
+                    'timeout'   => 2,
+                    'blocking'  => false,
+                )
+            );
+        }
+    }
+
+    /**
+     * Collect all URLs for an attachment (main file, original, and thumbnails).
+     *
+     * @param int $post_id The attachment post ID.
+     * @return string[]
+     */
+    private static function get_attachment_urls( $post_id ) {
+        $urls = array();
+
+        // Main attachment URL (may be the -scaled version).
+        $main_url = wp_get_attachment_url( $post_id );
+        if ( $main_url ) {
+            $urls[] = $main_url;
+        }
+
+        // Original image URL (pre-scaled), if different.
+        if ( function_exists( 'wp_get_original_image_url' ) ) {
+            $original_url = wp_get_original_image_url( $post_id );
+            if ( $original_url && $original_url !== $main_url ) {
+                $urls[] = $original_url;
+            }
+        }
+
+        // Thumbnail URLs from metadata.
+        $meta = wp_get_attachment_metadata( $post_id );
+        if ( ! empty( $meta['sizes'] ) && ! empty( $meta['file'] ) ) {
+            $upload_dir = wp_get_upload_dir();
+            $base_dir   = dirname( $meta['file'] );
+            foreach ( $meta['sizes'] as $size_data ) {
+                $urls[] = $upload_dir['baseurl'] . '/' . $base_dir . '/' . $size_data['file'];
+            }
+        }
+
+        return array_unique( $urls );
     }
 }
