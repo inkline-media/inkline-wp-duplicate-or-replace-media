@@ -4,7 +4,7 @@ Tags: media, duplicate, replace, copy, media library
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.2
-Stable tag: 4.0.0
+Stable tag: 4.0.1
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -86,6 +86,11 @@ Any user with the `upload_files` capability (Author role and above by default) c
 4. Replace Media form with side-by-side file preview.
 
 == Changelog ==
+
+= 4.0.1 =
+* Fixed: Duplicate now copies the original full-resolution file instead of the scaled version, producing a fully independent copy.
+* Fixed: Replace now force-deletes old thumbnail files individually to handle cases where WordPress skips shared thumbnails.
+* Fixed: Replace cleans up stale backup sizes metadata before regenerating thumbnails.
 
 = 4.0.0 =
 * Added: Replace Media functionality — upload a new file to replace an existing media item.
