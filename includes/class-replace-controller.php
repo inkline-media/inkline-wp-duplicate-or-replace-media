@@ -99,10 +99,9 @@ class Inkline_Replace_Controller {
         $post_id = $this->post_id;
 
         // 1. Get source metadata and URLs before we delete anything.
-        $source_url  = wp_get_original_image_url( $post_id );
-        if ( ! $source_url ) {
-            $source_url = wp_get_attachment_url( $post_id );
-        }
+        // Use the attachment URL (possibly -scaled), not the original image URL,
+        // because post content references the attachment URL.
+        $source_url  = wp_get_attachment_url( $post_id );
         $source_meta = wp_get_attachment_metadata( $post_id );
         $source_mime = get_post_mime_type( $post_id );
 
@@ -195,8 +194,10 @@ class Inkline_Replace_Controller {
 
             $replacer->replace( false );
         } else {
-            // Replace mode: only update thumbnail URLs (main URL stays the same).
-            $replacer->replace( true );
+            // Replace mode: update thumbnail URLs. Also update the main URL if
+            // it changed (e.g. scaled image replaced with a non-scaled one).
+            $thumbnails_only = ( $source_url === $target_url );
+            $replacer->replace( $thumbnails_only );
         }
 
         // 11. Update timestamps.

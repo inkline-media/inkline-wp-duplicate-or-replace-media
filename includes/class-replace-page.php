@@ -37,13 +37,13 @@ class Inkline_Replace_Page {
                 'inkline-replace-form',
                 plugins_url( 'assets/css/replace-form.css', dirname( __FILE__ ) ),
                 array(),
-                '4.0.1'
+                '4.0.2'
             );
             wp_enqueue_script(
                 'inkline-replace-form',
                 plugins_url( 'assets/js/replace-form.js', dirname( __FILE__ ) ),
                 array(),
-                '4.0.1',
+                '4.0.2',
                 true
             );
         } );

@@ -4,7 +4,7 @@ Tags: media, duplicate, replace, copy, media library
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.2
-Stable tag: 4.0.1
+Stable tag: 4.0.2
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -86,6 +86,10 @@ Any user with the `upload_files` capability (Author role and above by default) c
 4. Replace Media form with side-by-side file preview.
 
 == Changelog ==
+
+= 4.0.2 =
+* Fixed: Replace now correctly updates the main image URL in post content when the attachment URL changes (e.g. scaled images).
+* Fixed: Source URL for replacement now uses the attachment URL (which may be the -scaled version) rather than the original image URL, ensuring URL search/replace matches what's actually in content.
 
 = 4.0.1 =
 * Fixed: Duplicate now copies the original full-resolution file instead of the scaled version, producing a fully independent copy.
